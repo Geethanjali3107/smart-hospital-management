@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block heading %}Hospital Dashboard{% endblock %}
+{% block content %}
+<section class="kpis">
+  <div class="kpi"><span class="kpi-label">Total Patients</span><span class="kpi-value">{{ '{:,}'.format(stats.total_patients) }}</span><span class="kpi-note">{{ stats.conditions }} conditions · {{ stats.departments }} departments</span></div>
+  <div class="kpi"><span class="kpi-label">Average Hospital Cost</span><span class="kpi-value">{{ stats.avg_cost | inr }}</span><span class="kpi-note">Per patient · median {{ stats.median_cost | inr }}</span></div>
+  <div class="kpi"><span class="kpi-label">Average Length of Stay</span><span class="kpi-value">{{ stats.avg_los }} <small>days</small></span><span class="kpi-note">Average cost per day {{ stats.avg_cost_per_day | inr }}</span></div>
+  <div class="kpi"><span class="kpi-label">Total Billing</span><span class="kpi-value">₹{{ '%.2f' | format(stats.total_revenue / 10000000) }} <small>Cr</small></span><span class="kpi-note">{{ stats.total_revenue | inr }} · all discharged patients</span></div>
+</section>
+
+<section class="kpis small">
+  <div class="kpi flat"><span class="kpi-label">Emergency Admissions</span><span class="kpi-value">{{ stats.emergency_pct }}%</span></div>
+  <div class="kpi flat"><span class="kpi-label">ICU Patients</span><span class="kpi-value">{{ stats.icu_pct }}%</span></div>
+  <div class="kpi flat"><span class="kpi-label">Surgeries Performed</span><span class="kpi-value">{{ stats.surgery_pct }}%</span></div>
+  <div class="kpi flat"><span class="kpi-label">Recovery / Improved</span><span class="kpi-value">{{ stats.recovery_pct }}%</span></div>
+  <div class="kpi flat"><span class="kpi-label">Admissions (last 30 days)</span>
+    <span class="kpi-value">{{ stats.recent_admissions }}
+      {% set diff = stats.recent_admissions - stats.previous_admissions %}
+      <small class="{{ 'up' if diff >= 0 else 'down' }}">{{ '▲' if diff >= 0 else '▼' }} {{ diff | abs }} vs previous 30 days</small></span></div>
+</section>
+
+<section class="grid two">
+  <div class="card"><div class="card-head"><h2>Monthly Admissions</h2><span>Last 12 months</span></div><div class="chart-box"><canvas id="monthlyChart"></canvas></div></div>
+  <div class="card"><div class="card-head"><h2>Patients by Department</h2><span>Share of all admissions</span></div><div class="chart-box"><canvas id="deptChart"></canvas></div></div>
+</section>
+
+<section class="grid two">
+  <div class="card"><div class="card-head"><h2>Most Common Conditions</h2><span>Top 5 by patients</span></div><div class="chart-box short"><canvas id="topCondChart"></canvas></div></div>
+  <div class="card"><div class="card-head"><h2>Admission Type</h2><span>How patients arrive</span></div><div class="chart-box short"><canvas id="typeChart"></canvas></div></div>
+</section>
+
+<section class="card">
+  <div class="card-head"><h2>Recent Admissions</h2><a class="link" href="{{ url_for('patients') }}">View all records →</a></div>
+  <div class="table-wrap">
+    <table class="table" id="recentTable">
+      <thead><tr><th>Patient ID</th><th>Name</th><th>Condition</th><th>Department</th><th>Admitted</th><th class="num">Stay</th><th class="num">Bill</th></tr></thead>
+      <tbody><tr><td colspan="7" class="muted">Loading…</td></tr></tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

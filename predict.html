@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Stay Prediction{% endblock %}
+{% block heading %}Length of Stay Prediction{% endblock %}
+{% block content %}
+<section class="grid predict">
+  <div class="card">
+    <div class="card-head"><h2>Patient Details</h2><span>All fields are required</span></div>
+    <form id="predictForm" class="form-grid" novalidate>
+      <label class="field"><span>Age (years)</span>
+        <select name="age" required><option value="">Select age</option>
+          {% for a in range(options.age.min, options.age.max + 1) %}<option value="{{ a }}">{{ a }}</option>{% endfor %}</select>
+        <em class="err" data-for="age"></em></label>
+      <label class="field"><span>Gender</span>
+        <select name="gender" required><option value="">Select gender</option>{% for v in options.gender %}<option>{{ v }}</option>{% endfor %}</select>
+        <em class="err" data-for="gender"></em></label>
+      <label class="field full"><span>Primary diagnosis</span>
+        <select name="condition" required><option value="">Select condition</option>{% for v in options.condition %}<option>{{ v }}</option>{% endfor %}</select>
+        <em class="err" data-for="condition"></em></label>
+      <label class="field"><span>Admission type</span>
+        <select name="admission_type" required><option value="">Select type</option>{% for v in options.admission_type %}<option>{{ v }}</option>{% endfor %}</select>
+        <em class="err" data-for="admission_type"></em></label>
+      <label class="field"><span>Condition severity</span>
+        <select name="severity" required><option value="">Select severity</option>{% for v in options.severity %}<option>{{ v }}</option>{% endfor %}</select>
+        <em class="err" data-for="severity"></em></label>
+      <label class="field"><span>Ward type</span>
+        <select name="ward_type" required><option value="">Select ward</option>{% for v in options.ward_type %}<option>{{ v }}</option>{% endfor %}</select>
+        <em class="err" data-for="ward_type"></em></label>
+      <label class="field"><span>Surgery planned / performed</span>
+        <select name="surgery_performed" required><option value="">Select</option>{% for v in options.surgery_performed %}<option>{{ v }}</option>{% endfor %}</select>
+        <em class="err" data-for="surgery_performed"></em></label>
+      <label class="field"><span>Other existing conditions</span>
+        <select name="num_comorbidities" required><option value="">Select count</option>
+          {% for n in range(options.num_comorbidities.min, options.num_comorbidities.max + 1) %}<option value="{{ n }}">{{ n }}{{ ' (none)' if n == 0 }}</option>{% endfor %}</select>
+        <em class="err" data-for="num_comorbidities"></em></label>
+      <label class="field"><span>BMI category</span>
+        <select name="bmi_category" required><option value="">Select BMI</option>{% for v in options.bmi_category %}<option>{{ v }}</option>{% endfor %}</select>
+        <em class="err" data-for="bmi_category"></em></label>
+      <div class="full actions">
+        <button type="submit" class="btn" id="submitBtn">Predict length of stay</button>
+        <button type="reset" class="btn ghost" id="clearBtn">Clear</button>
+      </div>
+      <div class="alert" id="formAlert" hidden></div>
+    </form>
+  </div>
+
+  <div class="card result-card" id="resultCard">
+    <div class="card-head"><h2>Prediction</h2><span>Random Forest Regressor</span></div>
+    <div class="empty" id="emptyState">
+      <svg viewBox="0 0 24 24" width="44" height="44"><path fill="#7cc4f2" d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 5v5.4l4.3 2.5-.8 1.3L11 13V7z"/></svg>
+      <p>Fill in the patient details and select <strong>Predict length of stay</strong> to see the expected number of days in hospital.</p>
+    </div>
+    <div id="result" hidden>
+      <div class="big"><span id="rDays">–</span><small>days expected</small></div>
+      <div class="pill" id="rBand"></div>
+      <div class="split">
+        <div><span class="kpi-label">Likely range</span><strong id="rRange"></strong></div>
+        <div><span class="kpi-label">Exact model output</span><strong id="rExact"></strong></div>
+      </div>
+      <div class="cost-box">
+        <span class="kpi-label">Estimated hospital bill</span>
+        <strong id="rCost"></strong>
+        <small id="rCostRange"></small>
+        <small id="rCostBasis"></small>
+      </div>
+    </div>
+    <div class="model-strip" id="modelStrip">
+      <div><span class="kpi-label">Model accuracy (R²)</span><strong>{{ metrics.r2 }}</strong></div>
+      <div><span class="kpi-label">Average error</span><strong>±{{ metrics.mae_days }} days</strong></div>
+      <div><span class="kpi-label">Trained on</span><strong>{{ '{:,}'.format(metrics.train_records) }} patients</strong></div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/predict.js') }}"></script>{% endblock %}

@@ -1,0 +1,21 @@
+{
+  "algorithm": "Random Forest Regressor",
+  "n_estimators": 200,
+  "train_records": 1920,
+  "test_records": 480,
+  "mae_days": 1.39,
+  "rmse_days": 2.04,
+  "r2": 0.808,
+  "cv_r2_mean": 0.788,
+  "feature_importance": {
+    "severity": 0.3813,
+    "age": 0.2042,
+    "condition": 0.178,
+    "ward_type": 0.1103,
+    "num_comorbidities": 0.0613,
+    "surgery_performed": 0.0229,
+    "bmi_category": 0.0188,
+    "admission_type": 0.013,
+    "gender": 0.0103
+  }
+}

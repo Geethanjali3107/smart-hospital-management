@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Analytics{% endblock %}
+{% block heading %}Clinical &amp; Financial Analytics{% endblock %}
+{% block content %}
+<div class="notice" id="analyticsNote">Loading analytics…</div>
+
+<section class="grid two">
+  <div class="card"><div class="card-head"><h2>Patients by Medical Condition</h2><span id="condInsight"></span></div><div class="chart-box tall"><canvas id="condChart"></canvas></div></div>
+  <div class="card"><div class="card-head"><h2>Patients by Age Group</h2><span id="ageInsight"></span></div><div class="chart-box tall"><canvas id="ageChart"></canvas></div></div>
+</section>
+
+<section class="grid two">
+  <div class="card"><div class="card-head"><h2>Length of Stay Distribution</h2><span>Number of patients by days admitted</span></div><div class="chart-box"><canvas id="losChart"></canvas></div></div>
+  <div class="card"><div class="card-head"><h2>Hospital Cost Distribution</h2><span>Number of patients by total bill</span></div><div class="chart-box"><canvas id="costDistChart"></canvas></div></div>
+</section>
+
+<section class="grid two">
+  <div class="card"><div class="card-head"><h2>Average Length of Stay by Condition</h2><span>Days</span></div><div class="chart-box tall"><canvas id="losCondChart"></canvas></div></div>
+  <div class="card"><div class="card-head"><h2>Average Hospital Cost by Condition</h2><span>Per patient</span></div><div class="chart-box tall"><canvas id="costCondChart"></canvas></div></div>
+</section>
+
+<section class="grid three">
+  <div class="card"><div class="card-head"><h2>Average Cost by Age Group</h2></div><div class="chart-box short"><canvas id="costAgeChart"></canvas></div></div>
+  <div class="card"><div class="card-head"><h2>Average Cost by Ward</h2></div><div class="chart-box short"><canvas id="wardChart"></canvas></div></div>
+  <div class="card"><div class="card-head"><h2>Severity Mix</h2></div><div class="chart-box short"><canvas id="sevChart"></canvas></div></div>
+</section>
+
+<section class="grid two">
+  <div class="card"><div class="card-head"><h2>Admissions Trend</h2><span>Patients admitted per month</span></div><div class="chart-box"><canvas id="trendChart"></canvas></div></div>
+  <div class="card">
+    <div class="card-head"><h2>What Drives Length of Stay</h2><span>Random Forest feature importance</span></div>
+    <div id="importanceList" class="bars"></div>
+    <div class="model-strip" id="modelStrip"></div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+<script src="{{ url_for('static', filename='js/analytics.js') }}"></script>
+{% endblock %}

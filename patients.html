@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Patient Records{% endblock %}
+{% block heading %}Patient Records{% endblock %}
+{% block content %}
+<section class="card">
+  <form class="filters" id="filterForm" autocomplete="off">
+    <label class="field wide"><span>Search</span>
+      <input type="search" id="q" placeholder="Patient ID, name, condition or department">
+    </label>
+    <label class="field"><span>Condition</span>
+      <select id="condition"><option value="">All conditions</option>{% for c in options.condition %}<option>{{ c }}</option>{% endfor %}</select></label>
+    <label class="field"><span>Department</span>
+      <select id="department"><option value="">All departments</option>{% for d in departments %}<option>{{ d }}</option>{% endfor %}</select></label>
+    <label class="field"><span>Gender</span>
+      <select id="gender"><option value="">All</option>{% for g in options.gender %}<option>{{ g }}</option>{% endfor %}</select></label>
+    <label class="field"><span>Age group</span>
+      <select id="age_group"><option value="">All ages</option>{% for a in age_groups %}<option>{{ a }}</option>{% endfor %}</select></label>
+    <label class="field"><span>Severity</span>
+      <select id="severity"><option value="">All</option>{% for s in options.severity %}<option>{{ s }}</option>{% endfor %}</select></label>
+    <label class="field"><span>Admission type</span>
+      <select id="admission_type"><option value="">All</option>{% for t in options.admission_type %}<option>{{ t }}</option>{% endfor %}</select></label>
+    <label class="field"><span>Sort by</span>
+      <select id="sort">
+        <option value="admission_date:desc">Newest admission</option>
+        <option value="admission_date:asc">Oldest admission</option>
+        <option value="total_cost:desc">Highest bill</option>
+        <option value="total_cost:asc">Lowest bill</option>
+        <option value="length_of_stay:desc">Longest stay</option>
+        <option value="length_of_stay:asc">Shortest stay</option>
+        <option value="age:desc">Age (high to low)</option>
+        <option value="age:asc">Age (low to high)</option>
+        <option value="name:asc">Name (A–Z)</option>
+        <option value="patient_id:asc">Patient ID</option>
+      </select></label>
+    <button type="button" class="btn ghost" id="resetBtn">Reset</button>
+  </form>
+  <div class="result-bar" id="resultBar"></div>
+  <div class="table-wrap">
+    <table class="table hover" id="patientTable">
+      <thead><tr><th>Patient ID</th><th>Name</th><th>Age / Gender</th><th>Condition</th><th>Department</th><th>Severity</th><th>Admitted</th><th class="num">Stay</th><th class="num">Bill</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <div class="pager" id="pager"></div>
+</section>
+
+<div class="modal" id="modal" hidden>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <button class="modal-close" id="modalClose" aria-label="Close">×</button>
+    <h2 id="mTitle"></h2>
+    <p class="muted" id="mSub"></p>
+    <dl class="details" id="mBody"></dl>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/patients.js') }}"></script>{% endblock %}

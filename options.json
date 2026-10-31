@@ -1,0 +1,57 @@
+{
+  "gender": [
+    "Female",
+    "Male"
+  ],
+  "condition": [
+    "Appendicitis",
+    "Bone Fracture",
+    "COPD Exacerbation",
+    "Cancer Care (Oncology)",
+    "Chronic Kidney Disease",
+    "Dengue Fever",
+    "Diabetes Complications",
+    "Heart Failure",
+    "Hypertensive Crisis",
+    "Maternity Care",
+    "Myocardial Infarction",
+    "Pneumonia",
+    "Stroke",
+    "Typhoid Fever"
+  ],
+  "admission_type": [
+    "Elective",
+    "Emergency",
+    "Referral"
+  ],
+  "severity": [
+    "Mild",
+    "Moderate",
+    "Severe",
+    "Critical"
+  ],
+  "ward_type": [
+    "General",
+    "Semi-Private",
+    "Private",
+    "ICU"
+  ],
+  "surgery_performed": [
+    "No",
+    "Yes"
+  ],
+  "bmi_category": [
+    "Underweight",
+    "Normal",
+    "Overweight",
+    "Obese"
+  ],
+  "age": {
+    "min": 0,
+    "max": 100
+  },
+  "num_comorbidities": {
+    "min": 0,
+    "max": 5
+  }
+}
